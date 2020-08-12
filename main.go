@@ -1,9 +1,12 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"log"
 	"net/url"
+	"os"
+	"strings"
 
 	"github.com/gorilla/websocket"
 )
@@ -18,5 +21,23 @@ func main() {
 	if err != nil {
 		log.Fatal("Dial: ", err)
 	}
-	defer c.Close()
+	for {
+		input := getStdin()
+		if input == "exit" {
+			c.Close()
+			break
+		}
+	}
+}
+
+// getStdin ターミナルからの標準入力を受け取る
+// "exit"を入力された場合にプログラムを終了する
+func getStdin() string {
+	scanner := bufio.NewScanner(os.Stdin)
+
+	scanner.Scan()
+	stringInput := scanner.Text()
+
+	stringInput = strings.TrimSpace(stringInput)
+	return stringInput
 }
