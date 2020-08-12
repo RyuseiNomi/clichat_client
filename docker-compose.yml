@@ -1,0 +1,13 @@
+version: '3'
+services:
+  client:
+    container_name: chat-client
+    tty: true
+    build: ./
+    volumes:
+      - ./:/go/src/app
+
+networks:
+  default:
+    external:
+      name: clichat_network_1
