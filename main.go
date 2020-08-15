@@ -14,7 +14,15 @@ import (
 var addr = flag.String("addr", "chat-server:8000", "http service address")
 
 func main() {
+	// ユーザ名の入力を受取
+	log.Println("ユーザ名を入力：")
+	username, _ := getStdin()
+
+	// URLにQueryStringを追加
 	u := url.URL{Scheme: "ws", Host: *addr, Path: "/room"}
+	queryString := u.Query()
+	queryString.Set("name", username)
+	u.RawQuery = queryString.Encode()
 	log.Printf("connecting to %s", u.String())
 
 	c, _, err := websocket.DefaultDialer.Dial(u.String(), nil)
