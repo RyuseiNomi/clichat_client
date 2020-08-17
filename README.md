@@ -6,7 +6,7 @@ clichatは、Goで制作したCLI上でチャットが出来るアプリケー�
 
 ClientとServerに分かれており、それぞれが独立したコンテナとして動作をしながら同一のDockerネットワークで通信をします。
 
-![スクリーンショット 2020-08-17 14.31.49](/Users/Ryusei/Library/Application Support/typora-user-images/スクリーンショット 2020-08-17 14.31.49.png)
+![overview](/Users/Ryusei/go/src/github.com/RyuseiNomi/clichat_client/assets/overview.png)
 
 このリポジトリでは、クライアントコンテナを管理するdocker-composeファイル、そしてメッセージの送受信を行うソースコードを管理しています。
 
