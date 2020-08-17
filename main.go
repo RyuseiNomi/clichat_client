@@ -8,6 +8,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/RyuseiNomi/clichat_client/tracer"
 	"github.com/gorilla/websocket"
 )
 
@@ -20,6 +21,7 @@ type user struct {
 	input   chan []byte // ユーザが入力するメッセージを格納するチャネル
 	receive chan []byte // サーバから受け取ったメッセージを格納するチャネル
 	leave   chan bool
+	tracer  tracer.Tracer
 }
 
 func main() {
@@ -39,6 +41,7 @@ func main() {
 	}
 
 	usr := newUser()
+	usr.tracer = tracer.New(os.Stdout)
 	usr.run(c)
 }
 
@@ -56,10 +59,10 @@ func (u *user) run(c *websocket.Conn) {
 			// ターミナルからメッセージの入力を受けた時
 			c.WriteMessage(websocket.TextMessage, input)
 		case msg := <-u.receive:
-			log.Println(string(msg))
+			u.tracer.Trace(string(msg))
 		case leave := <-u.leave:
 			if leave == true {
-				log.Println("接続を終了します")
+				u.tracer.Trace("接続を終了します")
 				c.Close()
 				break
 			}
